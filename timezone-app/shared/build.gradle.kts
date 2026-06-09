@@ -10,7 +10,17 @@ plugins {
 
 kotlin {
     jvm()
-    
+
+/*
+    kotlin {
+        jvm {
+            mainRun {
+                mainClass.set("com.example.timezoneapp.AppKt")
+            }
+        }
+    }
+*/
+
     js {
         browser()
     }
@@ -61,4 +71,9 @@ kotlin {
 
 dependencies {
     androidRuntimeClasspath(libs.compose.uiTooling)
+}
+
+tasks.matching { it.name == "jvmRun" }.configureEach {
+    dependsOn(":desktopApp:run")
+    enabled = false
 }
