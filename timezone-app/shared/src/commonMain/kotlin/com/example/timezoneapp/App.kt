@@ -19,9 +19,27 @@ import org.jetbrains.compose.resources.painterResource
 import timezoneapp.shared.generated.resources.Res
 import timezoneapp.shared.generated.resources.compose_multiplatform
 
+import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Napier
+
 @Composable
 @Preview
 fun App() {
+    val provider = remember { DateTimeProviderImpl() }
+    var currentDateTime by remember { mutableStateOf("") }
+    var currentTimeZone by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+        // Initialize Napier logging base
+        Napier.base(DebugAntilog())
+        
+        currentDateTime = provider.getCurrentDateTime()
+        currentTimeZone = provider.getCurrentTimeZone()
+        
+        Napier.i(tag = "App") { "Current date and time: $currentDateTime" }
+        Napier.i(tag = "App") { "Current timezone: $currentTimeZone" }
+    }
+
     MaterialTheme {
         var showContent by remember { mutableStateOf(false) }
         Column(
@@ -43,6 +61,11 @@ fun App() {
                     Image(painterResource(Res.drawable.compose_multiplatform), null)
                     Text("Compose: $greeting")
                 }
+            }
+            
+            if (currentDateTime.isNotEmpty()) {
+                Text("Local Time: $currentDateTime")
+                Text("Timezone: $currentTimeZone")
             }
         }
     }
