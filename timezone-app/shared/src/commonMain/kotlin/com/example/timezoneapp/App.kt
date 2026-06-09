@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.timezoneapp.screens.*
 import com.example.timezoneapp.theme.AppColors
 import com.example.timezoneapp.theme.AppTheme
+import com.example.timezoneapp.navigation.AppNavigation
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 
@@ -41,50 +42,7 @@ fun App() {
     }
 
     AppTheme {
-        val navController = rememberNavController()
-        NavHost(
-            navController = navController,
-            startDestination = Routes.MAIN,
-            modifier = Modifier.fillMaxSize().background(AppColors.background)
-        ) {
-            composable(Routes.MAIN) {
-                MainScreen(
-                    onNavigateTo = { route ->
-                        navController.navigate(route)
-                    }
-                )
-            }
-            composable(Routes.BUTTONS) {
-                ButtonsScreen(onBack = { navController.popBackStack() })
-            }
-            composable(Routes.CHECKBOXES) {
-                CheckboxesScreen(onBack = { navController.popBackStack() })
-            }
-            composable(Routes.CHIPS) {
-                ChipsScreen(onBack = { navController.popBackStack() })
-            }
-            composable(Routes.DATEPICKER) {
-                DatepickerScreen(onBack = { navController.popBackStack() })
-            }
-            composable(Routes.DIALOG) {
-                DialogScreen(onBack = { navController.popBackStack() })
-            }
-            composable(Routes.DIVIDER) {
-                DividerScreen(onBack = { navController.popBackStack() })
-            }
-            composable(Routes.PROGRESS) {
-                ProgressBarScreen(onBack = { navController.popBackStack() })
-            }
-            composable(Routes.RADIOBUTTONS) {
-                RadioButtonsScreen(onBack = { navController.popBackStack() })
-            }
-            composable(Routes.SWITCH) {
-                SwitchScreen(onBack = { navController.popBackStack() })
-            }
-            composable(Routes.TIMEPICKER) {
-                TimepickerScreen(onBack = { navController.popBackStack() })
-            }
-        }
+        AppNavigation()
     }
 }
 

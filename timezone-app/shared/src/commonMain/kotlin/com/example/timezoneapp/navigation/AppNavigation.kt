@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.timezoneapp.ui.MainScreen
+import com.example.timezoneapp.ui.HomeScreen
 import com.example.timezoneapp.ui.components.*
 
 @Composable
@@ -13,8 +14,11 @@ fun AppNavigation() {
     
     NavHost(
         navController = navController,
-        startDestination = "main"
+        startDestination = "home"
     ) {
+        composable("home") {
+            HomeScreen(onNavigate = { route -> navController.navigate(route) })
+        }
         composable("main") {
             MainScreen(onNavigate = { route -> navController.navigate(route) })
         }
