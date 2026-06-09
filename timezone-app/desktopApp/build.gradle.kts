@@ -15,9 +15,15 @@ dependencies {
     implementation(libs.compose.uiToolingPreview)
 }
 
+sourceSets {
+    main {
+        java.srcDirs("src/jvmMain/kotlin")
+    }
+}
+
 compose.desktop {
     application {
-        mainClass = "com.example.timezoneapp.MainKt"
+        mainClass = "MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
