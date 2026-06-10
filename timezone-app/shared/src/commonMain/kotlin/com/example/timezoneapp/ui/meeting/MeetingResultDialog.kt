@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.timezoneapp.DateTimeProvider
 import com.example.timezoneapp.theme.AppColors
+import com.example.timezoneapp.ui.dialog.showDialog
 import kotlin.time.Clock
 import kotlinx.datetime.*
 
@@ -38,93 +39,89 @@ fun MeetingResultDialog(
         )
     }
 
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = {
+    showDialog(
+        title = "Suitable Meeting Slots",
+        onDismiss = onDismiss
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 400.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
             Text(
-                text = "Suitable Meeting Slots",
-                style = MaterialTheme.typography.titleLarge,
-                color = AppColors.text,
-                fontWeight = FontWeight.Bold
+                text = "Preferred local window: ${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')} - ${endHour.toString().padStart(2, '0')}:${endMinute.toString().padStart(2, '0')}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = AppColors.textSecondary
             )
-        },
-        text = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = 400.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Text(
-                    text = "Preferred local window: ${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')} - ${endHour.toString().padStart(2, '0')}:${endMinute.toString().padStart(2, '0')}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = AppColors.textSecondary
-                )
 
-                if (results.isEmpty()) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "No overlapping time slots found.\nTry expanding your preferred time range.",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = AppColors.textSecondary,
-                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                        )
-                    }
-                } else {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        items(results) { slot ->
-                            Card(
-                                modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(12.dp),
-                                colors = CardDefaults.cardColors(containerColor = AppColors.background)
+            if (results.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "No overlapping time slots found.\nTry expanding your preferred time range.",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = AppColors.textSecondary,
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                    )
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(results) { slot ->
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(containerColor = AppColors.background)
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(16.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                Column(
-                                    modifier = Modifier.padding(16.dp),
-                                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                                ) {
+                                Text(
+                                    text = "${slot.localStart} - ${slot.localEnd} (Local)",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = AppColors.primary,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                
+                                HorizontalDivider(color = AppColors.divider)
+                                
+                                slot.zoneBreakdowns.forEach { breakdown ->
                                     Text(
-                                        text = "${slot.localStart} - ${slot.localEnd} (Local)",
-                                        style = MaterialTheme.typography.titleMedium,
-                                        color = AppColors.primary,
-                                        fontWeight = FontWeight.Bold
+                                        text = breakdown,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = AppColors.text
                                     )
-                                    
-                                    HorizontalDivider(color = AppColors.divider)
-                                    
-                                    slot.zoneBreakdowns.forEach { breakdown ->
-                                        Text(
-                                            text = breakdown,
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = AppColors.text
-                                        )
-                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-        },
-        confirmButton = {
-            Button(
-                onClick = onDismiss,
-                colors = ButtonDefaults.buttonColors(containerColor = AppColors.primary)
+
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
             ) {
-                Text("Close", color = androidx.compose.ui.graphics.Color.White)
+                Button(
+                    onClick = onDismiss,
+                    colors = ButtonDefaults.buttonColors(containerColor = AppColors.primary)
+                ) {
+                    Text("Close", color = androidx.compose.ui.graphics.Color.White)
+                }
             }
-        },
-        containerColor = AppColors.surface
-    )
+        }
+    }
 }
 
 private data class OverlapSlot(
