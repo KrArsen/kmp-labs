@@ -9,7 +9,7 @@ plugins {
 }
 
 kotlin {
-    jvm()
+    jvm("desktop")
     
     js {
         browser()
@@ -34,7 +34,7 @@ kotlin {
        withHostTest {
            isIncludeAndroidResources = true
        }
-    }
+     }
     
     sourceSets {
         androidMain.dependencies {
@@ -49,6 +49,7 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.napier)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
