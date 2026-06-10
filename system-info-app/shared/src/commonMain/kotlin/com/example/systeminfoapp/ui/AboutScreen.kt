@@ -6,8 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,13 +15,14 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.systeminfoapp.platform.getSystemInfo
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.systeminfoapp.ui.theme.AppTheme
 import io.github.aakira.napier.Napier
 
 @Composable
-fun AboutScreen() {
-    val systemInfo by remember { mutableStateOf(getSystemInfo()) }
+fun AboutScreen(viewModel: AboutViewModel = viewModel()) {
+    val systemInfoNullable by viewModel.systemInfo.collectAsState()
+    val systemInfo = systemInfoNullable ?: return
 
     LaunchedEffect(systemInfo) {
         Napier.d(tag = "AboutScreen") {
