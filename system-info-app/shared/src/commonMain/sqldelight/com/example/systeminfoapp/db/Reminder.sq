@@ -1,0 +1,15 @@
+CREATE TABLE Reminder (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    createdAt TEXT NOT NULL
+);
+
+getAllReminders:
+SELECT * FROM Reminder ORDER BY id DESC;
+
+insertReminder:
+INSERT INTO Reminder(title, description, createdAt) VALUES (?, ?, ?);
+
+deleteReminder:
+DELETE FROM Reminder WHERE id = ?;
