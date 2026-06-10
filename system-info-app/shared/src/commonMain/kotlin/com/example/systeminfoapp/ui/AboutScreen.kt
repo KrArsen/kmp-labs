@@ -7,6 +7,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,7 +22,7 @@ import io.github.aakira.napier.Napier
 
 @Composable
 fun AboutScreen() {
-    val systemInfo = remember { getSystemInfo() }
+    val systemInfo by remember { mutableStateOf(getSystemInfo()) }
 
     LaunchedEffect(systemInfo) {
         Napier.d(tag = "AboutScreen") {
@@ -85,12 +87,12 @@ fun AboutScreen() {
                     InfoCard(label = "Device Model", value = systemInfo.deviceModel, emoji = "📱")
                     InfoCard(label = "Manufacturer", value = systemInfo.manufacturer, emoji = "🏭")
                 }
-                
+
                 Spacer(modifier = Modifier.weight(1f))
-                
+
                 // Footer
                 Text(
-                    text = "KMP System Info App • Lab 6",
+                    text = "KMP System Info App • Lab 7",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                 )
