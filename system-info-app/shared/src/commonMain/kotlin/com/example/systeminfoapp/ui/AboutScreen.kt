@@ -16,13 +16,15 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.systeminfoapp.platform.getSystemInfo
+import com.example.systeminfoapp.data.SystemInfoRepository
 import com.example.systeminfoapp.ui.theme.AppTheme
 import io.github.aakira.napier.Napier
+import org.koin.compose.koinInject
 
 @Composable
 fun AboutScreen() {
-    val systemInfo by remember { mutableStateOf(getSystemInfo()) }
+    val repository = koinInject<SystemInfoRepository>()
+    val systemInfo by remember { mutableStateOf(repository.getSystemInfo()) }
 
     LaunchedEffect(systemInfo) {
         Napier.d(tag = "AboutScreen") {
@@ -92,7 +94,7 @@ fun AboutScreen() {
 
                 // Footer
                 Text(
-                    text = "KMP System Info App • Lab 7",
+                    text = "KMP System Info App • Lab 8",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                 )
